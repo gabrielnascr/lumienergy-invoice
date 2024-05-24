@@ -7,18 +7,21 @@ export class InvoiceCostExtractor implements IRegexExtractor<InvoiceCost[]> {
     const values: InvoiceCost[] = [];
     let isInValoresFaturadosSection = false;
 
+    const tripleNumberRegex =
+      /(-?\d+[.,]?\d*)\s+(-?\d+[.,]?\d*)\s+(-?\d+[.,]?\d*)/;
+
     const costMatchers = [
       {
         description: "Energia Elétrica",
-        regex: /(-?\d+[.,]?\d*)\s+(-?\d+[.,]?\d*)\s+(-?\d+[.,]?\d*)/,
+        regex: tripleNumberRegex,
       },
       {
         description: "Energia SCEE",
-        regex: /(-?\d+[.,]?\d*)\s+(-?\d+[.,]?\d*)\s+(-?\d+[.,]?\d*)/,
+        regex: tripleNumberRegex,
       },
       {
         description: "Energia compensada",
-        regex: /(-?\d+[.,]?\d*)\s+(-?\d+[.,]?\d*)\s+(-?\d+[.,]?\d*)/,
+        regex: tripleNumberRegex,
       },
       { description: "Contrib Ilum", regex: /(-?\d+,\d+)/ },
     ];
