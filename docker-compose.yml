@@ -1,0 +1,43 @@
+version: "4"
+
+services:
+  rabbitmq-server:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: ogabrielnascr
+      RABBITMQ_DEFAULT_PASS: ogabrielnascr
+  pg:
+    image: postgres:13
+    container_name: postgres
+    ports:
+      - "5430:5430"
+    environment:
+      POSTGRES_USER: ogabrielnascr
+      POSTGRES_PASSWORD: ogabrielnascr
+      POSTGRES_DB: lumienergy-bills
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+  lumienergy-backend:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: lumienergy-backend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - rabbitmq-server
+    environment:
+      - PORT=3000
+      - NODE_ENV=development
+      - RABBITMQ_USER=ogabrielnascr
+      - RABBITMQ_PASS=ogabrielnascr
+      - RABBITMQ_HOST=rabbitmq-server
+      - RABBITMQ_PORT=5672
+    volumes:
+      - ./server/src:/usr/src/app/src
+volumes:
+  pgdata:
