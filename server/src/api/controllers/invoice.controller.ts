@@ -1,18 +1,22 @@
-import { IEnergyBillDataExtractor } from "../../core/dataExtractors/energyBillDataExtractor";
-import { InvoiceProducer } from "../../core/messageBrokers/invoice-producer";
 import { Request, Response } from "express";
-import { InvoiceService } from "../../services/invoice/invoice.service";
+import { InvoiceService } from "../../core/services/InvoiceService";
+import { InvoiceServiceFactory } from "../../core/services/factories/InvoiceServiceFactory";
 
-export class InvoiceControler {
+class InvoiceController {
   constructor(private invoiceService: InvoiceService) {}
 
   async handleInvoice(req: Request, res: Response) {
-    if (!req.file?.buffer) {
-      return res.status(400).send({ message: "No buffer data" });
+    if (!req.files || req.files.length === 0) {
+      return res.status(400).send({ message: "No files uploaded" });
     }
-    await this.invoiceService.publishInvoices(req.file?.buffer);
+    // console.log(req.files);
+    const files = req.files.map((file) => file);
+    await this.invoiceService.publishInvoices(files);
     return res.status(200).send({
       message: "Invoice process start",
     });
   }
 }
+
+const invoiceService = InvoiceServiceFactory.create();
+export default new InvoiceController(invoiceService);

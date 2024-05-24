@@ -1,9 +1,17 @@
 import * as amqplib from "amqplib";
 
-export class InvoiceConsumer {
+export interface InvoiceMessageHandler {
+  (message: { filename: string; buffer: Buffer }): Promise<void>;
+}
+
+export interface IInvoiceConsumer {
+  consume: (handler: InvoiceMessageHandler) => Promise<void>;
+}
+
+export class InvoiceConsumer implements IInvoiceConsumer {
   private readonly QUEUE_NAME = "invoice_queue";
 
-  async consume(handler: (message: any) => void) {
+  async consume(handler: InvoiceMessageHandler) {
     const connection = await amqplib.connect(
       "amqp://ogabrielnascr:ogabrielnascr@rabbitmq-server"
     );
@@ -17,7 +25,7 @@ export class InvoiceConsumer {
       async (message: amqplib.ConsumeMessage | null) => {
         try {
           if (message) {
-            await handler(message.content);
+            await handler(JSON.parse(message.content.toString()));
             channel.ack(message);
           }
         } catch (error) {
