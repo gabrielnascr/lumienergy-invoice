@@ -38,12 +38,21 @@ export class InvoiceCostExtractor implements IRegexExtractor<InvoiceCost[]> {
           if (line.startsWith(matcher.description)) {
             const match = line.match(matcher.regex);
             if (match) {
-              values.push({
-                description: matcher.description,
-                kWh: parseFloat(match[1]?.replace(",", ".")) || 0,
-                unit_price: parseFloat(match[2]?.replace(",", ".")) || 0,
-                price: parseFloat(match[3]?.replace(",", ".")) || 0,
-              });
+              if (matcher.description === "Contrib Ilum") {
+                values.push({
+                  description: matcher.description,
+                  kWh: 0,
+                  unit_price: 0,
+                  price: parseFloat(match[0]?.replace(",", ".")),
+                });
+              } else {
+                values.push({
+                  description: matcher.description,
+                  kWh: parseFloat(match[1]?.replace(",", ".")) || 0,
+                  unit_price: parseFloat(match[2]?.replace(",", ".")) || 0,
+                  price: parseFloat(match[3]?.replace(",", ".")) || 0,
+                });
+              }
             }
             break;
           }
