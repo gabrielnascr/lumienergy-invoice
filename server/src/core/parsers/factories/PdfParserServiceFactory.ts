@@ -1,4 +1,4 @@
-import { PdfParserService } from "../PDFParserService";
+import { PdfParserService } from "../../parsers/PDFParserService";
 
 export class PdfParserServiceFactory {
   static create(): PdfParserService {

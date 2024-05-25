@@ -1,28 +1,24 @@
 import * as path from "path";
-import {
-  IInvoiceConsumer,
-  InvoiceConsumer,
-} from "../messageBrokers/invoice-consumer";
-import {
-  IInvoiceProducer,
-  InvoiceProducer,
-} from "../messageBrokers/invoice-producer";
-import { FileService } from "./FileService";
-import { PdfParserService } from "./PDFParserService";
+import { IInvoiceConsumer } from "../messageBrokers/invoice-consumer";
+import { IInvoiceProducer } from "../messageBrokers/invoice-producer";
+import { PdfParserService } from "../parsers/PDFParserService";
+import { FirebaseStorageService } from "../storage/FirebaseStorageService";
+import { IInvoiceRepository } from "../repositories/InvoiceRepository";
 
 export class InvoiceService {
   constructor(
     private readonly invoiceConsumer: IInvoiceConsumer,
     private readonly invoiceProducer: IInvoiceProducer,
     private readonly pdfParserService: PdfParserService,
-    private readonly fileService: FileService
+    private readonly firebaseStorage: FirebaseStorageService,
+    private readonly invoiceRepository: IInvoiceRepository
   ) {}
 
   async publishInvoices(files: Express.Multer.File[]) {
     for (let i = 0; files.length > i; i++) {
       await this.invoiceProducer.send({
         buffer: files[i].buffer,
-        filename: files[i].filename,
+        filename: files[i].originalname,
       });
     }
   }
@@ -32,15 +28,25 @@ export class InvoiceService {
       await this.invoiceConsumer.consume(async (invoice) => {
         const { buffer, filename } = invoice;
 
-        const invoiceData = await this.pdfParserService.extractInvoiceData(
-          Buffer.from(buffer)
+        const invoiceExtractedData =
+          await this.pdfParserService.extractInvoiceData(Buffer.from(buffer));
+        const invoiceUploadedPath = await this.firebaseStorage.uploadFile(
+          "bills",
+          Buffer.from(buffer),
+          filename
         );
-        console.log("INVOICE DATA:", invoiceData);
+
+        const data = {
+          ...invoiceExtractedData,
+          invoicePath: invoiceUploadedPath,
+        };
       });
     } catch (error) {
       console.error("Erro ao ler as faturas:", error);
     }
   }
 
-  async saveInvoice() {}
+  async saveInvoice() {
+    // await this.invoiceRepository.createInvoice()
+  }
 }

@@ -10,11 +10,11 @@ services:
     environment:
       RABBITMQ_DEFAULT_USER: ogabrielnascr
       RABBITMQ_DEFAULT_PASS: ogabrielnascr
-  pg:
+  postgres:
     image: postgres:13
     container_name: postgres
     ports:
-      - "5430:5430"
+      - "5432:5432"
     environment:
       POSTGRES_USER: ogabrielnascr
       POSTGRES_PASSWORD: ogabrielnascr
@@ -30,13 +30,12 @@ services:
       - "3000:3000"
     depends_on:
       - rabbitmq-server
+      - postgres
+    env_file:
+      - ./server/.env
     environment:
       - PORT=3000
       - NODE_ENV=development
-      - RABBITMQ_USER=ogabrielnascr
-      - RABBITMQ_PASS=ogabrielnascr
-      - RABBITMQ_HOST=rabbitmq-server
-      - RABBITMQ_PORT=5672
     volumes:
       - ./server/src:/usr/src/app/src
 volumes:

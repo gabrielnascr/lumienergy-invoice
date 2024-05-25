@@ -5,7 +5,7 @@ import {
   getDownloadURL,
 } from "firebase/storage";
 
-import { storage } from "../../config/firebase";
+import { storage } from "../config/firebase";
 
 export class FirebaseStorageService {
   async uploadFile(

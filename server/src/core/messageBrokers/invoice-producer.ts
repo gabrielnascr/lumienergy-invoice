@@ -1,4 +1,4 @@
-import * as amqplib from "amqplib";
+import { RabbitMQService } from "../RabbitMQService";
 
 export interface IInvoiceProducer {
   send: ({
@@ -12,12 +12,14 @@ export interface IInvoiceProducer {
 
 export class InvoiceProducer implements IInvoiceProducer {
   private readonly QUEUE_NAME = "invoice_queue";
+  private rabbitMQService: RabbitMQService;
+
+  constructor(rabbitMQService: RabbitMQService) {
+    this.rabbitMQService = rabbitMQService;
+  }
 
   async send({ filename, buffer }: { filename: string; buffer: Buffer }) {
-    const connection = await amqplib.connect(
-      "amqp://ogabrielnascr:ogabrielnascr@rabbitmq-server"
-    );
-    const channel = await connection.createChannel();
+    const channel = await this.rabbitMQService.createChannel();
 
     await channel.assertQueue(this.QUEUE_NAME, { durable: true });
     channel.sendToQueue(
@@ -34,6 +36,5 @@ export class InvoiceProducer implements IInvoiceProducer {
     );
 
     await channel.close();
-    await connection.close();
   }
 }

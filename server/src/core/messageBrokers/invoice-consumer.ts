@@ -1,4 +1,5 @@
 import * as amqplib from "amqplib";
+import { RabbitMQService } from "../../core/RabbitMQService";
 
 export interface InvoiceMessageHandler {
   (message: { filename: string; buffer: Buffer }): Promise<void>;
@@ -10,13 +11,14 @@ export interface IInvoiceConsumer {
 
 export class InvoiceConsumer implements IInvoiceConsumer {
   private readonly QUEUE_NAME = "invoice_queue";
+  private rabbitMQService: RabbitMQService;
+
+  constructor(rabbitMQService: RabbitMQService) {
+    this.rabbitMQService = rabbitMQService;
+  }
 
   async consume(handler: InvoiceMessageHandler) {
-    const connection = await amqplib.connect(
-      "amqp://ogabrielnascr:ogabrielnascr@rabbitmq-server"
-    );
-
-    const channel = await connection.createChannel();
+    const channel = await this.rabbitMQService.createChannel();
     await channel.assertQueue(this.QUEUE_NAME, { durable: true });
     await channel.prefetch(1);
 

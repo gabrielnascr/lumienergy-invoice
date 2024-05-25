@@ -1,8 +1,10 @@
 import { InvoiceService } from "../InvoiceService";
-import { PdfParserServiceFactory } from "./PdfParserServiceFactory";
+
 import { InvoiceConsumerFactory } from "../../../core/messageBrokers/factories/invoice-consumer.factory";
 import { InvoiceProduceFactory } from "../../../core/messageBrokers/factories/invoice-producer.factory";
-import { FileServiceFactory } from "./FileServiceFactory";
+import { FirebaseStorageService } from "../../../core/storage/FirebaseStorageService";
+import { PdfParserServiceFactory } from "../../parsers/factories/PdfParserServiceFactory";
+import { InvoiceRepository } from "src/core/repositories/InvoiceRepository";
 
 export class InvoiceServiceFactory {
   static create(): InvoiceService {
@@ -10,7 +12,8 @@ export class InvoiceServiceFactory {
       InvoiceConsumerFactory.create(),
       InvoiceProduceFactory.create(),
       PdfParserServiceFactory.create(),
-      FileServiceFactory.create()
+      new FirebaseStorageService(),
+      new InvoiceRepository()
     );
   }
 }

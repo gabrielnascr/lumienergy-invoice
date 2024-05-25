@@ -23,10 +23,10 @@
     "typescript": "^5.4.5"
   },
   "scripts": {
-    "start": "ts-node-dev --respawn --transpile-only --ignore-watch node_modules ./src/server.ts",
-    "start:prod": "npm run build && node ./dist/src/server.js",
+    "start": "ts-node-dev --respawn --transpile-only --ignore-watch node_modules ./src/api/server.ts",
+    "start:prod": "npm run build && node ./dist/src/api/server.js",
     "build": "npx tsc",
-    "db:migrate": "npx prisma migrate dev --name user-entity --create-only && npx prisma generate",
+    "db:migrate": "npx prisma migrate dev",
     "db:push": "npx prisma db push"
   },
   "devDependencies": {
