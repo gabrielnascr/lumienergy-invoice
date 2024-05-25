@@ -4,6 +4,8 @@
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
+    "@prisma/client": "^5.14.0",
+    "@types/firebase": "^3.2.1",
     "@types/multer": "^1.4.11",
     "@types/node": "^20.12.12",
     "@types/pdf-parse": "^1.1.4",
@@ -11,9 +13,11 @@
     "body-parser": "^1.20.2",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
+    "firebase": "^10.12.1",
     "multer": "^1.4.5-lts.1",
     "pdf-lib": "^1.17.1",
     "pdf-parse": "^1.1.1",
+    "prisma": "^5.14.0",
     "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.4.5"
@@ -21,7 +25,9 @@
   "scripts": {
     "start": "ts-node-dev --respawn --transpile-only --ignore-watch node_modules ./src/server.ts",
     "start:prod": "npm run build && node ./dist/src/server.js",
-    "build": "npx tsc"
+    "build": "npx tsc",
+    "db:migrate": "npx prisma migrate dev --name user-entity --create-only && npx prisma generate",
+    "db:push": "npx prisma db push"
   },
   "devDependencies": {
     "@types/amqplib": "^0.10.5",
