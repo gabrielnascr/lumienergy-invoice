@@ -1,7 +1,7 @@
 import "dotenv/config";
 import * as express from "express";
 import routes from "./routes";
-import { InvoiceServiceFactory } from "../core/services/factories/InvoiceServiceFactory";
+import { InvoiceServiceFactory } from "../modules/invoice/services/factories/InvoiceServiceFactory";
 
 const app = express();
 

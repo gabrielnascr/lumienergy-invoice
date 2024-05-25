@@ -1,5 +1,5 @@
 import { Invoice, Prisma } from "@prisma/client";
-import { PrismaService } from "../PrismaService";
+import { PrismaService } from "../../../core/PrismaService";
 
 export interface IInvoiceRepository {
   createInvoice(data: Prisma.InvoiceCreateInput): Promise<Invoice>;

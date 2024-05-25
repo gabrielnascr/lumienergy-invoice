@@ -1,5 +1,5 @@
 import * as amqplib from "amqplib";
-import { RabbitMQService } from "../../core/RabbitMQService";
+import { RabbitMQService } from "../../../core/RabbitMQService";
 
 export interface InvoiceMessageHandler {
   (message: { filename: string; buffer: Buffer }): Promise<void>;

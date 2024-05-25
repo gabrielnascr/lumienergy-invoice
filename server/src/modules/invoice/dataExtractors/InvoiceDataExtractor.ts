@@ -1,4 +1,4 @@
-import { InvoiceData } from "../../@types";
+import { InvoiceData } from "../../../@types";
 
 interface IRegexExtractor<T> {
   extract(text: string): T;

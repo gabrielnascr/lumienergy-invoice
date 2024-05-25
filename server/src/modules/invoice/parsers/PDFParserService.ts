@@ -1,8 +1,9 @@
 import * as pdf from "pdf-parse";
-import { InvoiceCost, InvoiceData } from "../../@types";
 import { IRegexExtractor } from "../dataExtractors/IRegexExtractor";
 import { InvoiceDataExtractor } from "../dataExtractors/InvoiceDataExtractor";
 import { InvoiceCostExtractor } from "../dataExtractors/InvoiceCostExtractor";
+import { InvoiceData } from "../../../@types";
+import { InvoiceCost } from "@prisma/client";
 
 export class PdfParserService {
   private invoiceDataExtractor: IRegexExtractor<Partial<InvoiceData>>;

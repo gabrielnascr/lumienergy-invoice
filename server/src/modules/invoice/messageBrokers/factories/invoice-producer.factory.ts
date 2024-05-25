@@ -1,4 +1,4 @@
-import { RabbitMQService } from "../../../core/RabbitMQService";
+import { RabbitMQService } from "../../../../core/RabbitMQService";
 import { IInvoiceProducer, InvoiceProducer } from "../invoice-producer";
 
 export class InvoiceProduceFactory {

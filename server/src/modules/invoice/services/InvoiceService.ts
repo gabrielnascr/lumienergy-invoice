@@ -16,6 +16,7 @@ export class InvoiceService {
 
   async publishInvoices(files: Express.Multer.File[]) {
     for (let i = 0; files.length > i; i++) {
+      console.log(files[i]);
       await this.invoiceProducer.send({
         buffer: files[i].buffer,
         filename: files[i].originalname,
@@ -40,6 +41,7 @@ export class InvoiceService {
           ...invoiceExtractedData,
           invoicePath: invoiceUploadedPath,
         };
+        console.log(data);
       });
     } catch (error) {
       console.error("Erro ao ler as faturas:", error);

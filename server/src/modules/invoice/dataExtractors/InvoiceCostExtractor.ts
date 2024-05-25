@@ -1,4 +1,4 @@
-import { InvoiceCost } from "src/@types";
+import { InvoiceCost } from "../../../@types";
 import { IRegexExtractor } from "./IRegexExtractor";
 
 export class InvoiceCostExtractor implements IRegexExtractor<InvoiceCost[]> {

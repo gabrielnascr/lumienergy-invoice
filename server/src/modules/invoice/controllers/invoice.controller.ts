@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { InvoiceService } from "../../core/services/InvoiceService";
-import { InvoiceServiceFactory } from "../../core/services/factories/InvoiceServiceFactory";
+import { InvoiceService } from "../services/InvoiceService";
+import { InvoiceServiceFactory } from "../services/factories/InvoiceServiceFactory";
 
 class InvoiceController {
   constructor(private invoiceService: InvoiceService) {}

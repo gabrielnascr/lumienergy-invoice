@@ -1,5 +1,5 @@
 import { Router } from "express";
-import invoiceRoutes from "./invoice.routes";
+import invoiceRoutes from "../../modules/invoice/routes";
 
 const router = Router();
 

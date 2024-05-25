@@ -1,4 +1,4 @@
-import { RabbitMQService } from "../RabbitMQService";
+import { RabbitMQService } from "../../../core/RabbitMQService";
 
 export interface IInvoiceProducer {
   send: ({
