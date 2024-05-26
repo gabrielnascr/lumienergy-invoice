@@ -158,15 +158,97 @@ export class InvoiceService {
     console.log(report);
   }
 
-  async clearLastProcessingReport(
-    successInvoices: any[],
-    errorInvoices: any[]
+  async getInvoices(
+    adminId: string,
+    customeNumber?: string,
+    customerName?: string,
+    referenceMonth?: string
   ) {
-    successInvoices = [];
-    errorInvoices = [];
+    let invoices = await this.invoiceRepository.getAllInvoices(adminId);
+
+    if (customeNumber) {
+      invoices = invoices.filter((invoice) =>
+        invoice.customeNumber.includes(customeNumber)
+      );
+    }
+
+    if (customerName) {
+      invoices = invoices.filter((invoice) =>
+        invoice.customerName.includes(customerName)
+      );
+    }
+
+    if (referenceMonth) {
+      invoices = invoices.filter((invoice) =>
+        invoice.referenceMonth.includes(referenceMonth)
+      );
+    }
+
+    return invoices;
   }
 
-  async saveInvoice() {
-    // await this.invoiceRepository.createInvoice()
+  async getStatistics(adminId: string) {
+    const invoices = await this.getInvoices(adminId);
+
+    const statistics = invoices.reduce(
+      (acc, invoice) => {
+        const consumptionElectricity = invoice.invoiceCosts.reduce(
+          (sum, cost) => {
+            console.log(sum);
+            if (
+              cost.description == "Energia Elétrica" ||
+              cost.description == "Energia SCEE"
+            ) {
+              return sum + cost.kWh;
+            }
+            return sum;
+          },
+          0
+        );
+
+        const energyCompensated = invoice.invoiceCosts.reduce((sum, cost) => {
+          if (cost.description === "Energia compensada") {
+            return sum + cost.kWh;
+          }
+          return sum;
+        }, 0);
+
+        const valueTotalWithoutEconomy = invoice.invoiceCosts.reduce(
+          (sum, cost) => {
+            if (
+              cost.description === "Energia Elétrica" ||
+              cost.description === "Energia SCEE" ||
+              cost.description === "Contrib Ilum"
+            ) {
+              return sum + cost.price;
+            }
+            return sum;
+          },
+          0
+        );
+
+        const economy = invoice.invoiceCosts.reduce((sum, cost) => {
+          if (cost.description === "Energia compensada") {
+            return sum + cost.price;
+          }
+          return sum;
+        }, 0);
+
+        acc.consumptionElectricity += consumptionElectricity;
+        acc.energyCompensated += energyCompensated;
+        acc.valueTotalWithoutEconomy += valueTotalWithoutEconomy;
+        acc.economy += economy;
+
+        return acc;
+      },
+      {
+        consumptionElectricity: 0,
+        energyCompensated: 0,
+        valueTotalWithoutEconomy: 0,
+        economy: 0,
+      }
+    );
+
+    return statistics;
   }
 }

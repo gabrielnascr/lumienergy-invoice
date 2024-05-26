@@ -46,5 +46,13 @@ services:
       - NODE_ENV=development
     volumes:
       - ./server:/usr/src/app/
+  lumienergy-front:
+    build:
+      context: "./frontend"
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./frontend:/app
 volumes:
   pgdata:

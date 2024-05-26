@@ -48,7 +48,7 @@ export class InvoiceCostExtractor implements IRegexExtractor<InvoiceCost[]> {
               } else {
                 values.push({
                   description: matcher.description,
-                  kWh: parseFloat(match[1]?.replace(",", ".")) || 0,
+                  kWh: parseFloat(match[1]?.replace(".", "")) || 0,
                   unit_price: parseFloat(match[2]?.replace(",", ".")) || 0,
                   price: parseFloat(match[3]?.replace(",", ".")) || 0,
                 });

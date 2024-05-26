@@ -1,5 +1,15 @@
-import { Invoice, Prisma } from "@prisma/client";
+import { Invoice, InvoiceCost, Prisma } from "@prisma/client";
 import { PrismaService } from "../../../core/PrismaService";
+
+export interface InvoiceWithCosts extends Invoice {
+  invoiceCosts: InvoiceCost[];
+}
+
+interface InvoiceSearch {
+  customeNumber?: string;
+  customerName?: string;
+  referenceMonth?: string;
+}
 
 export interface IInvoiceRepository {
   createInvoice(data: Prisma.InvoiceCreateInput): Promise<Invoice>;
@@ -13,7 +23,10 @@ export interface IInvoiceRepository {
     data: Prisma.InvoiceUpdateInput
   ): Promise<Invoice | null>;
   deleteInvoice(id: string): Promise<void>;
-  getAllInvoices(): Promise<Invoice[]>;
+  getAllInvoices(
+    admin: string,
+    search?: InvoiceSearch
+  ): Promise<InvoiceWithCosts[]>;
 }
 
 export class InvoiceRepository implements IInvoiceRepository {
@@ -30,11 +43,15 @@ export class InvoiceRepository implements IInvoiceRepository {
   async findInvoiceByCustomerNameAndReferenceMonth(
     customeNumber: string,
     referenceMonth: string
-  ): Promise<Invoice | null> {
+  ): Promise<Invoice[]> {
     return this.prisma.getPrisma().invoice.findMany({
       where: {
         customeNumber,
         referenceMonth,
+      },
+      include: {
+        address: true,
+        invoiceCosts: true,
       },
     });
   }
@@ -77,7 +94,15 @@ export class InvoiceRepository implements IInvoiceRepository {
     }
   }
 
-  async getAllInvoices(): Promise<Invoice[]> {
-    return this.prisma.getPrisma().invoice.findMany();
+  async getAllInvoices(adminId: string): Promise<InvoiceWithCosts[]> {
+    return this.prisma.getPrisma().invoice.findMany({
+      where: {
+        adminId: adminId,
+      },
+      include: {
+        address: true,
+        invoiceCosts: true,
+      },
+    });
   }
 }
