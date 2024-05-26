@@ -30,9 +30,7 @@ export class InvoiceConsumer implements IInvoiceConsumer {
             await handler(JSON.parse(message.content.toString()));
             channel.ack(message);
           }
-        } catch (error) {
-          console.error("Error processing message:", error);
-        }
+        } catch (error) {}
       },
       { noAck: false }
     );

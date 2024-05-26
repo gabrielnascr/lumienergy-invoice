@@ -1,5 +1,6 @@
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
+  binaryTargets = ["linux-musl-arm64-openssl-3.0.x"]
 }
 
 datasource db {
@@ -8,15 +9,17 @@ datasource db {
 }
 
 model Admin {
-  id       Int       @id @default(autoincrement())
+  id       String    @id @default(uuid())
   email    String    @unique
   password String
   name     String
   invoices Invoice[]
+
+  @@map("admin")
 }
 
 model Invoice {
-  id             Int           @id @default(autoincrement())
+  id             String        @id @default(uuid())
   customerName   String
   customeNumber  String
   referenceMonth String
@@ -26,8 +29,10 @@ model Invoice {
   address        Address       @relation(fields: [addressId], references: [id])
   invoiceCosts   InvoiceCost[]
   invoicePath    String
-  adminId        Int
+  adminId        String
   admin          Admin         @relation(fields: [adminId], references: [id])
+
+  @@map("invoice")
 }
 
 model Address {
@@ -35,14 +40,18 @@ model Address {
   street  String
   number  String
   invoice Invoice?
+
+  @@map("address")
 }
 
 model InvoiceCost {
-  id          Int     @id @default(autoincrement())
+  id          String  @id @default(uuid())
   kWh         Float
   unit_price  Float
   price       Float
   description String
-  invoiceId   Int
+  invoiceId   String
   invoice     Invoice @relation(fields: [invoiceId], references: [id])
+
+  @@map("invoice_cost")
 }

@@ -4,7 +4,8 @@ import { PrismaService } from "../../../core/PrismaService";
 import { CreateUserDTO } from "../dtos/CreateUserDTO";
 
 interface IUserRepository {
-  createUser: (createUserDTO: CreateUserDTO) => Promise<Admin>;
+  create: (createUserDTO: CreateUserDTO) => Promise<Admin>;
+  findByEmail: (email: string) => Promise<Admin>;
 }
 
 export class UserRepository implements IUserRepository {
@@ -14,10 +15,18 @@ export class UserRepository implements IUserRepository {
     this.prisma = new PrismaService();
   }
 
-  async createUser(createUserDTO: CreateUserDTO) {
+  async create(createUserDTO: CreateUserDTO) {
     return this.prisma.getPrisma().admin.create({
       data: {
         ...createUserDTO,
+      },
+    });
+  }
+
+  async findByEmail(email: string) {
+    return this.prisma.getPrisma().admin.findFirst({
+      where: {
+        email: email,
       },
     });
   }

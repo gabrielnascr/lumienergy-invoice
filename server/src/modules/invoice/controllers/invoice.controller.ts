@@ -9,12 +9,12 @@ class InvoiceController {
     if (!req.files || req.files.length === 0) {
       return res.status(400).send({ message: "No files uploaded" });
     }
-
     const files = req.files.map((file) => file);
-    await this.invoiceService.publishInvoices(files);
-    return res.status(200).send({
-      message: "Invoice process start",
-    });
+    const batch = await this.invoiceService.publishInvoices(
+      files,
+      req.user.userId
+    );
+    return res.send(batch);
   }
 }
 
