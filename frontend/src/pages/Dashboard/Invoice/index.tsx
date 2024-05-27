@@ -24,10 +24,9 @@ const Invoice: React.FC = () => {
 
   const downloadInvoice = async (id: string) => {
     try {
-      const invoice = invoices.filter((invoice) => invoice.id)[0];
+      const invoice = invoices.filter((invoice) => invoice.id === id)[0];
       const invoicePath = invoice.invoicePath;
 
-      console.log(invoicePath);
       const link = document.createElement("a");
       link.href = invoicePath;
       link.setAttribute("download", `invoice-${invoice.id}`);
