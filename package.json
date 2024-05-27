@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "@types/yup": "^0.32.0"
+  }
+}

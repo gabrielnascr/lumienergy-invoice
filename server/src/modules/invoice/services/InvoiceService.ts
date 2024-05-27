@@ -194,7 +194,6 @@ export class InvoiceService {
       (acc, invoice) => {
         const consumptionElectricity = invoice.invoiceCosts.reduce(
           (sum, cost) => {
-            console.log(sum);
             if (
               cost.description == "Energia Elétrica" ||
               cost.description == "Energia SCEE"

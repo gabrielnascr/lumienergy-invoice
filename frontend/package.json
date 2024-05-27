@@ -13,13 +13,20 @@
     "@types/react-dom": "^18.3.0",
     "autoprefixer": "^10.4.19",
     "axios": "^1.7.2",
+    "chart.js": "^4.4.3",
+    "formik": "^2.4.6",
     "postcss": "^8.4.38",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-hot-toast": "^2.4.1",
+    "react-icons": "^5.2.1",
     "react-redux": "^9.1.2",
+    "react-router-dom": "^6.23.1",
     "react-scripts": "5.0.1",
+    "typ": "^0.6.3",
     "typescript": "^4.9.5",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "yup": "^1.4.0"
   },
   "scripts": {
     "start": "PORT=3001 react-scripts start",

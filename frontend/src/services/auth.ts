@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const authService = createApi({
   reducerPath: "authService",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://lumienergy-backend:3000",
+    baseUrl: "http://localhost:3000",
   }),
   endpoints: (builder) => ({
     login: builder.mutation<any, { email: string; password: string }>({
@@ -33,4 +33,4 @@ export const authService = createApi({
   }),
 });
 
-export const { useLoginMutation } = authService;
+export const { useLoginMutation, useRegisterMutation } = authService;
