@@ -15,11 +15,12 @@ export default function App() {
     <BrowserRouter>
       {loading && <Loading />}
       <Routes>
-        <Route path="/" element={<AuthLayout />}>
-          <Route path="login" element={<Login />} />
+        <Route element={<AuthLayout />}>
+          <Route index path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
         </Route>
         <Route path="/dashboard/*" element={<DashboardRoutes />} />
+        <Route path="*" element={<Login />} />
       </Routes>
     </BrowserRouter>
   );

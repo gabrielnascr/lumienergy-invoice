@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState, store } from "../../../store";
 import {
@@ -17,6 +17,7 @@ const Invoice: React.FC = () => {
   const { invoices, loading, error } = useSelector(
     (state: RootState) => state.invoice
   );
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     store.dispatch(fetchInvoices(""));
@@ -38,6 +39,14 @@ const Invoice: React.FC = () => {
       console.error("Erro ao baixar fatura:", error);
     }
   };
+
+  const filteredInvoices = invoices.filter(
+    (invoice) =>
+      invoice.customerName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      invoice.customeNumber.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      invoice.referenceMonth.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   if (loading) {
     return (
       <div className="w-full h-full relative">
@@ -65,6 +74,15 @@ const Invoice: React.FC = () => {
           Fazer upload de faturas
         </button>
       </div>
+      <div className="mb-4">
+        <input
+          type="text"
+          placeholder="Filtrar faturas"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="w-full p-2 border border-gray-300 rounded"
+        />
+      </div>
       <div className="h-96 overflow-auto">
         <table className="min-w-full bg-white ">
           <thead>
@@ -77,7 +95,7 @@ const Invoice: React.FC = () => {
             </tr>
           </thead>
           <tbody className="">
-            {invoices.map((invoice: InvoiceType) => (
+            {filteredInvoices.map((invoice: InvoiceType) => (
               <tr key={invoice.id}>
                 <td className="py-2 text-left">{invoice.customerName}</td>
                 <td className="py-2 text-left">{invoice.customeNumber}</td>
