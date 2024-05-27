@@ -1,13 +1,31 @@
-import React from "react";
-import ChartComponent from "../../../components/ChatComponent";
+import React, { useEffect, useState } from "react";
+import ChartComponent from "../../../components/Chat";
+import api from "../../../services";
 
-export default function index() {
-  const data = {
-    consumptionElectricity: 2377,
-    energyCompensated: 2077,
-    valueTotalWithoutEconomy: 1464.02,
-    economy: -1012.17,
-  };
+interface Data {
+  consumptionElectricity: number;
+  energyCompensated: number;
+  valueTotalWithoutEconomy: number;
+  economy: number;
+}
+export default function Index() {
+  // const data = {
+  //   consumptionElectricity: 2377,
+  //   energyCompensated: 2077,
+  //   valueTotalWithoutEconomy: 1464.02ß,
+  //   economy: -1012.17,
+  // };
+
+  const [data, setData] = useState({} as Data);
+
+  useEffect(() => {
+    const getStatistics = async () => {
+      const response = await api.get("/invoices/statistics");
+      setData(response.data);
+    };
+
+    getStatistics();
+  }, []);
 
   return (
     <div>

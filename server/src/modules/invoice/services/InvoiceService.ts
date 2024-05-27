@@ -131,6 +131,7 @@ export class InvoiceService {
         }
       });
     } catch (error) {
+      console.log(error);
       await this.saveProcessingReport(
         batchId,
         totalFiles,
@@ -155,7 +156,6 @@ export class InvoiceService {
       errorInvoices,
     };
     // next steps -> save proccess report and send a report to admin, via websocket or something
-    console.log(report);
   }
 
   async getInvoices(
@@ -249,5 +249,9 @@ export class InvoiceService {
     );
 
     return statistics;
+  }
+
+  async delete(invoiceId: string) {
+    await this.invoiceRepository.deleteInvoice(invoiceId);
   }
 }

@@ -13,10 +13,6 @@ const Sidebar = () => {
       title: "Faturas",
       route: "/dashboard/invoices",
     },
-    {
-      title: "Configuração",
-      route: "/dashboard/config",
-    },
   ];
 
   return (

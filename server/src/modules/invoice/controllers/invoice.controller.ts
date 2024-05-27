@@ -50,6 +50,16 @@ class InvoiceController {
       next(error);
     }
   }
+
+  async delete(req: Request, res: Response, next: NextFunction) {
+    try {
+      const adminId = req.user.userId;
+      const invoiceId = req.params.id;
+      return await this.invoiceService.delete(invoiceId);
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 const invoiceService = InvoiceServiceFactory.create();

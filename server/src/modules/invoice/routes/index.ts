@@ -18,4 +18,8 @@ router.get("/statistics", (req, res, next) =>
   invoiceController.statistics(req, res, next)
 );
 
+router.delete("/:id", (req, res, next) =>
+  invoiceController.delete(req, res, next)
+);
+
 export default router;

@@ -27,7 +27,12 @@ const ChartComponent: React.FC<Props> = ({ data }) => {
       chartInstance.current = new Chart(ctx!, {
         type: "bar",
         data: {
-          labels: ["Consumo", "Compensação", "Valor Total", "Economia"],
+          labels: [
+            "Consumo de Energia Elétrica KWh",
+            "Energia Compensada kWh",
+            "Valor Total R$",
+            "Economia",
+          ],
           datasets: [
             {
               label: "Dados da Fatura de Energia Elétrica",

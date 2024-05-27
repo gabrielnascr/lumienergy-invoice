@@ -14,7 +14,6 @@ export default function DashboardRoutes() {
           <Routes>
             <Route path="/" element={<Dashboard />} />
             <Route path="invoices" element={<Invoice />} />
-            <Route path="settings" element={<>adas</>} />
           </Routes>
         </RequireAuth>
       </div>
